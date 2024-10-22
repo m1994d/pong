@@ -55,4 +55,4 @@ Este proyecto es una implementación del juego clásico de **Pong** utilizando l
 
 ## 👤 Autor
 
-Este proyecto fue desarrollado por **Marlon**, un programador web que está creando una versión clásica del juego Pong utilizando p5.js.
+Este proyecto fue desarrollado por **MadTech (Marlon Diaz)**, un programador web que está creando una versión clásica del juego Pong utilizando p5.js.
