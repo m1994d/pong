@@ -23,6 +23,7 @@ let puntosMaximos; // Nuevo: variable para el límite de puntos
 let partidaEnCurso = false; // Para controlar el estado del juego
 
 let fondo;
+let fondoInicio; // Nuevo: imagen de fondo para la pantalla de inicio
 let barraJugador;
 let barraComputadora;
 let bola;
@@ -31,6 +32,7 @@ let sonidoGol;
 
 function preload() {
     fondo = loadImage('asddf-01.png');
+    fondoInicio = loadImage('fondo1.png'); // Nuevo: Cargar la imagen de fondo para la pantalla de inicio
     barraJugador = loadImage('barra1.png');
     barraComputadora = loadImage('barra2.png');
     bola = loadImage('bola.png');
@@ -56,10 +58,11 @@ function setup() {
 
 function draw() {
     if (!partidaEnCurso) {
-        background(200);
+        // Dibuja el fondo de inicio cuando no hay partida en curso
+        background(fondoInicio);
         textSize(32);
         textAlign(CENTER, CENTER);
-        fill(0);
+        fill(255);
         text("Introduce los puntos y presiona Iniciar Partida", width / 2, height / 2);
         return;
     }
