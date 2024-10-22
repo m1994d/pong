@@ -60,9 +60,15 @@ function draw() {
     if (!partidaEnCurso) {
         // Dibuja el fondo de inicio cuando no hay partida en curso
         background(fondoInicio);
+        
         textSize(32);
         textAlign(CENTER, CENTER);
-        fill(255);
+
+        // Añadir borde "neón" al texto
+        stroke(100, 15, 155); // Color neón (azul cian)
+        strokeWeight(4); // Grosor del borde
+        fill(255); // Color del texto (blanco)
+
         text("Introduce los puntos y presiona Iniciar Partida", width / 2, height / 2);
         return;
     }
@@ -76,6 +82,7 @@ function draw() {
     moverComputadora();
     verificarColisiones();
 }
+
 
 function iniciarPartida() {
     // Pedir los puntos máximos al usuario
