@@ -28,7 +28,7 @@ let sonidoRebote;
 let sonidoGol;
 
 function preload() {
-    fondo = loadImage('fondo1.png');
+    fondo = loadImage('asddf-01.png');
     barraJugador = loadImage('barra1.png');
     barraComputadora = loadImage('barra2.png');
     bola = loadImage('bola.png');
