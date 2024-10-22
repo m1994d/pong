@@ -15,23 +15,23 @@ let velocidadPelotaX = 5;
 let velocidadPelotaY = 5;
 let anguloPelota = 0;
 
-let grosorMarco = 10;
+let grosorMarco = 10; //Margen del limite de juego
 
-let jugadorScore = 0;
-let computadoraScore = 0;
+let jugadorScore = 0; // Marcador Jugador
+let computadoraScore = 0; // Marcador Computadora
 let puntosMaximos; // Nuevo: variable para el límite de puntos
 let partidaEnCurso = false; // Para controlar el estado del juego
 
-let fondo;
+let fondo; // Foondo de juego en partida
 let fondoInicio; // Nuevo: imagen de fondo para la pantalla de inicio
-let barraJugador;
-let barraComputadora;
+let barraJugador; //Raqueta o barra del Jugador
+let barraComputadora; //Raqueta o barra de la computadora
 let bola;
 let sonidoRebote;
 let sonidoGol;
 
 function preload() {
-    fondo = loadImage('asddf-01.png');
+    fondo = loadImage('asddf-01.png'); // Foondo de juego en partida
     fondoInicio = loadImage('fondo1.png'); // Nuevo: Cargar la imagen de fondo para la pantalla de inicio
     barraJugador = loadImage('barra1.png');
     barraComputadora = loadImage('barra2.png');
@@ -118,7 +118,7 @@ function dibujarPelota() {
 function mostrarPuntaje() {
     textSize(32);
     textAlign(CENTER, CENTER);
-    fill(color("#2B3FD6"));
+    fill(color("#fffff"));
     text(jugadorScore, width / 4, grosorMarco * 3);
     text(computadoraScore, 3 * width / 4, grosorMarco * 3);
 }
