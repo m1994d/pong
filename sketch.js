@@ -19,6 +19,8 @@ let grosorMarco = 10;
 
 let jugadorScore = 0;
 let computadoraScore = 0;
+let puntosMaximos; // Nuevo: variable para el límite de puntos
+let partidaEnCurso = false; // Para controlar el estado del juego
 
 let fondo;
 let barraJugador;
@@ -40,10 +42,28 @@ function setup() {
     createCanvas(anchoCanvas, altoCanvas);
     jugadorY = height / 2 - altoRaqueta / 2;
     computadoraY = height / 2 - altoRaqueta / 2;
-    resetPelota();
+    
+    // Crear un botón para iniciar la partida
+    let botonIniciar = createButton('Iniciar Partida');
+    botonIniciar.position(20, altoCanvas + 20);
+    botonIniciar.mousePressed(iniciarPartida);
+    
+    // Crear un botón para finalizar la partida
+    let botonFinalizar = createButton('Finalizar Partida');
+    botonFinalizar.position(150, altoCanvas + 20);
+    botonFinalizar.mousePressed(finalizarPartida);
 }
 
 function draw() {
+    if (!partidaEnCurso) {
+        background(200);
+        textSize(32);
+        textAlign(CENTER, CENTER);
+        fill(0);
+        text("Introduce los puntos y presiona Iniciar Partida", width / 2, height / 2);
+        return;
+    }
+
     background(fondo);
     dibujarMarcos();
     dibujarRaquetas();
@@ -52,6 +72,24 @@ function draw() {
     moverPelota();
     moverComputadora();
     verificarColisiones();
+}
+
+function iniciarPartida() {
+    // Pedir los puntos máximos al usuario
+    puntosMaximos = prompt("¿A cuántos puntos deseas jugar?");
+    
+    if (puntosMaximos != null && !isNaN(puntosMaximos) && puntosMaximos > 0) {
+        jugadorScore = 0;
+        computadoraScore = 0;
+        partidaEnCurso = true;
+        resetPelota();
+    } else {
+        alert("Por favor, introduce un número válido de puntos.");
+    }
+}
+
+function finalizarPartida() {
+    partidaEnCurso = false;
 }
 
 function dibujarMarcos() {
@@ -86,11 +124,9 @@ function moverPelota() {
     pelotaX += velocidadPelotaX;
     pelotaY += velocidadPelotaY;
 
-    // Ajustar el ángulo de la pelota en función de su velocidad
     let velocidadTotal = sqrt(velocidadPelotaX * velocidadPelotaX + velocidadPelotaY * velocidadPelotaY);
     anguloPelota += velocidadTotal * 0.05;
 
-    // Colisión con el marco superior e inferior
     if (pelotaY - diametroPelota / 2 < grosorMarco || 
         pelotaY + diametroPelota / 2 > height - grosorMarco) {
         velocidadPelotaY *= -1;
@@ -107,37 +143,43 @@ function moverComputadora() {
 }
 
 function verificarColisiones() {
-    // Colisión con la raqueta del jugador
     if (pelotaX - diametroPelota / 2 < jugadorX + anchoRaqueta && 
         pelotaY > jugadorY && pelotaY < jugadorY + altoRaqueta) {
         let puntoImpacto = pelotaY - (jugadorY + altoRaqueta / 2);
-        let factorAngulo = (puntoImpacto / (altoRaqueta / 2)) * PI / 3; // Ángulo máximo de 60 grados
+        let factorAngulo = (puntoImpacto / (altoRaqueta / 2)) * PI / 3;
         velocidadPelotaY = 10 * sin(factorAngulo);
         velocidadPelotaX *= -1;
-        sonidoRebote.play(); // Reproducir sonido de rebote
+        sonidoRebote.play();
     }
 
-    // Colisión con la raqueta de la computadora
     if (pelotaX + diametroPelota / 2 > computadoraX && 
         pelotaY > computadoraY && pelotaY < computadoraY + altoRaqueta) {
         let puntoImpacto = pelotaY - (computadoraY + altoRaqueta / 2);
-        let factorAngulo = (puntoImpacto / (altoRaqueta / 2)) * PI / 3; // Ángulo máximo de 60 grados
+        let factorAngulo = (puntoImpacto / (altoRaqueta / 2)) * PI / 3;
         velocidadPelotaY = 10 * sin(factorAngulo);
         velocidadPelotaX *= -1;
-        sonidoRebote.play(); // Reproducir sonido de rebote
+        sonidoRebote.play();
     }
 
-    // Colisión con los bordes izquierdo y derecho (anotación y reinicio)
     if (pelotaX < 0) {
         computadoraScore++;
-        sonidoGol.play(); // Reproducir sonido de gol
-        narrarMarcador(); // Narrar marcador
+        sonidoGol.play();
+        narrarMarcador();
         resetPelota();
+        verificarFinPartida();
     } else if (pelotaX > width) {
         jugadorScore++;
-        sonidoGol.play(); // Reproducir sonido de gol
-        narrarMarcador(); // Narrar marcador
+        sonidoGol.play();
+        narrarMarcador();
         resetPelota();
+        verificarFinPartida();
+    }
+}
+
+function verificarFinPartida() {
+    if (jugadorScore >= puntosMaximos || computadoraScore >= puntosMaximos) {
+        partidaEnCurso = false;
+        alert(`Partida finalizada. Ganador: ${jugadorScore > computadoraScore ? 'Jugador' : 'Computadora'}`);
     }
 }
 
